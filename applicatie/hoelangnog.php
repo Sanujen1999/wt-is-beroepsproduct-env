@@ -17,7 +17,7 @@ $diff=date_diff($date1,$date2);
 <body>
  
 <?php
-echo 'Sinterklaas duurt nog '. $diff->format(" %a dagen en %h uren en jaren     ") . '<br>';
+echo 'Sinterklaas duurt nog '. $diff->format(" %a dagen en %h uren") . '<br>';
   
 ?>
 
