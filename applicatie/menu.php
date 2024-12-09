@@ -14,24 +14,24 @@
 
 $eten = [
 
-    'Shoarma' => '6.95',
-    'Appels' => '10.95',
-    'Tabouleh' => '8.95',
-    'Hamburger' => '5.50',
+    'Shoarma' => 6.95,
+    'Appels' => 10.95,
+    'Tabouleh' => 8.95,
+    'Hamburger' => 5.50,
 ];
 
 $drinken = [
 
-    'Cola' => '2.00',
-    'Aryan' => '2.30',
-    'Fernandes' => '2.50',
-    'Bier' => '5.50',
+    'Cola' => 2.00,
+    'Aryan' => 2.30,
+    'Fernandes' => 2.50,
+    'Bier' => 5.50,
 ];
 
 $toetjes = [
 
-    'Taart' => '12.00',
-    'Cake' => '10.00',
+    'Taart' => 12.00,
+    'Cake' => 10.00,
 ];
 
 
