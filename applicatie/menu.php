@@ -1,11 +1,10 @@
 <?php
 
-// if (isset($_GET['menu'], $_GET['eten'], $_GET['drinken'])) {
-//     $Menu = $_GET['menu']; // Gebruik de juiste parameter
+// if (isset($_GET['eten'], $_GET['drinken'])) {
+//     $Menu = $_GET['drinken']; // Gebruik de juiste parameter
 //     $Eten = $_GET['eten']; // Gebruik de juiste parameter
 //     $Drinken = $_GET['drinken'];
 // } else {
-//     echo "De opgegeven $Menu is niet beschikbaar.";
 //     echo "De opgegeven $Eten is niet beschikbaar.";
 //     echo "De opgegeven $Drinken is niet beschikbaar.";
 // }
@@ -48,7 +47,7 @@ function showMenuItems($array){
 
     foreach($array as $key =>$value) {
     
-        $html .= "<tr><td>($key)</td><td>($value)</td></tr>";
+        $html .= "<tr><td>$key</td><td>€ $value</td></tr>";
     
     }
     
