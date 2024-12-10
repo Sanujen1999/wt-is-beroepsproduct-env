@@ -1,26 +1,18 @@
 <?php
 require_once 'db_connectie.php';
+require_once '../applicatie/library/db_functie.php';
+
 $db = maakVerbinding();
 echo 'GELUKT';
+?>
 
+<body>
 
-$sql = 'select * from stuk';
-$dataset = $db->query($sql);
-// var_dump($data);
+    <?php
+ 
+echo KiesTabel($db,'stuk');
+echo KiesTabel($db,'componist');
 
-foreach ($dataset as $row) {
-    // echo $row['titel'].'<br>';
-    $html = '<table>';
+?>
 
-    for ($i = 0; $i < 8; $i++) {
-        $html .= "<tr><td>$i</td></tr>";
-        echo $row[$i] . '<br>';
-    }
-    $html .= '</table>';
-    return $html;  
-    // var_dump($row);
-    // foreach($row as $column){
-    //     var_dump(value:$column);
-    // }
-
-}
+</body>
