@@ -98,7 +98,6 @@ function showMenu()
     <table>
         <?php
         echo showMenu();
-
         ?>
         <table>
 </body>
