@@ -1,9 +1,31 @@
 <?php
-$sql = 'select * from stuk';
+require_once 'db_connectie.php';
 $db = maakVerbinding();
-$dataset = $db->query($sql);
-// var_dump($data);
+// var_dump($_GET);
  
+if (isset($_GET['genrenaam'])){
+    $genrenaam = $_GET['genrenaam'];
+} else{
+    $genrenaam = '';
+}
+$sql = "
+    SELECT 
+        s.stuknr, 
+        s.titel, 
+        s.genrenaam, 
+        n.omschrijving AS niveau_omschrijving, 
+        c.naam AS componist_naam
+    FROM Stuk AS s
+    LEFT JOIN Niveau AS n ON s.niveaucode = n.niveaucode
+    INNER JOIN Componist AS c ON s.componistId = c.componistId
+    WHERE s.genrenaam LIKE :genrenaam
+";
+$dataset = $db->prepare($sql);
+$dataset->execute(
+    [
+        'genrenaam' => '%' . $genrenaam . '%'
+    ]
+);
 
 function KiesTabel($db, $tabel)
 {
@@ -41,5 +63,8 @@ function toonTabelInhoud($dataset)
 }
 
 // Een voorbeeld aanroep:
-echo KiesTabel($db, 'stuk,componist,niveau');
-?>
+echo toonTabelInhoud($dataset);
+
+
+
+
