@@ -26,6 +26,27 @@ $dataset->execute(
         'genrenaam' => '%' . $genrenaam . '%'
     ]
 );
+function getGenreSelectBox($selection)
+{
+    // Toevoegen: geef het geselecteerde genre `selected`
+
+    $db = maakVerbinding();
+    $sql = 'select genrenaam 
+            from Genre';
+    $data = $db->query($sql);
+
+    $selectbox = '<select id="genrenaam" name="genrenaam">';
+    foreach($data as $rij)
+    {
+        $genrenaam = $rij['genrenaam'];
+        $selectbox .= "<option value=\"$genrenaam\">$genrenaam</option>";
+ 
+    }
+    $selectbox .= '</select>';
+
+    return $selectbox;
+}
+
 
 function KiesTabel($db, $tabel)
 {
@@ -61,9 +82,22 @@ function toonTabelInhoud($dataset)
     $html .= '</table>';
     return $html; // Zorg dat de tabel wordt teruggegeven
 }
+?>
 
-// Een voorbeeld aanroep:
-echo toonTabelInhoud($dataset);
+<html>
+<body>
+<form action="toontabel.php">
+  <label for="genrenaam" name="genrenaam" id="genrenaam">Kies genrenaam</label>
+  <?php echo getGenreSelectBox($genrenaam);?>
+  <input type="submit" value="Submit">
+  <?php echo toonTabelInhoud($dataset); ?>
+</form>
+</body>
+</html>
+
+
+
+
 
 
 
