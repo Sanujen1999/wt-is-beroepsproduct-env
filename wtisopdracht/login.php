@@ -1,3 +1,43 @@
+<?php
+session_start();
+
+$logged_in = false;
+$html = "";
+
+// Controleer of er een POST-verzoek is om in te loggen
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Controleer of username en pass zijn ingevuld
+    if (!empty($_POST['username']) && !empty($_POST['password'])) {
+        // Haal de ingevoerde waardes op
+        $username = htmlspecialchars($_POST['username']);
+        $password = htmlspecialchars($_POST['password']);
+
+        // Voor nu simuleren we gebruikerscontrole (gebruik een echte database in productie)
+        $valid_username = "admin";
+        $valid_password = "password123";
+
+        if ($username === $valid_username && $password === $valid_password) {
+            // Sla gebruikersinformatie op in de sessie
+            $_SESSION['username'] = $username;
+            $logged_in = true;
+            $html = "<h1>Welcome {$username}</h1>";
+        } else {
+            echo "<p>Invalid username or password. Please try again.</p>";
+        }
+    } else {
+        echo "<p>Please fill in both username and password.</p>";
+    }
+}
+
+// Controleer of er al een sessie actief is
+if (isset($_SESSION['username'])) {
+    $logged_in = true;
+    $html = "<h1>Welcome {$_SESSION['username']}</h1>";
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,12 +71,12 @@
                 <h2>Login</h2>
                 <form>
                     <div class="form-group">
-                        <label for="login-email">Email-adres</label>
-                        <input type="email" id="login-email" placeholder="Voer je Email-adres in" required>
+                        <label for="username">Gebruikersnaam</label>
+                        <input type="text" id="username" placeholder="Voer je gebruikersnaam in" required>
                     </div>
                     <div class="form-group">
-                        <label for="login-password">Wachtwoord</label>
-                        <input type="password" id="login-password" placeholder="Voer je wachtwoord in" required>
+                        <label for="password">Wachtwoord</label>
+                        <input type="password" id="password" placeholder="Voer je wachtwoord in" required>
                     </div>
                     <a href="registratie.html">Registreer je hier</a>
                     <button type="submit" class="form-button">Inloggen</button>

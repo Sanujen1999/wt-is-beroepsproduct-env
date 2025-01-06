@@ -1,5 +1,5 @@
 <?php
-$sql = 'select * from stuk';
+$sql = 'select * from pizzaria';
 $db = maakVerbinding();
 $dataset = $db->query($sql);
 // var_dump($data);
@@ -41,5 +41,5 @@ function toonTabelInhoud($dataset)
 }
 
 // Een voorbeeld aanroep:
-echo KiesTabel($db, 'stuk,componist,niveau');
+// echo KiesTabel($db, 'stuk,componist,niveau');
 ?>
