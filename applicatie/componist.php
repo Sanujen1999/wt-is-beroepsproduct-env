@@ -100,4 +100,3 @@ if (count($fouten) > 0) {
 echo $melding
 
 ?>
-<
