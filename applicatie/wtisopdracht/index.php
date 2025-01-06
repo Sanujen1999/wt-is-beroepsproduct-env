@@ -1,3 +1,9 @@
+<?php
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +11,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/normalize.css">
-  <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/style.css">
+  <link rel="stylesheet" href="../wtisopdracht/CSS/normalize.css">
+  <link rel="stylesheet" href="../wtisopdracht/CSS/style.css">
   <title>Pizzaria Sole Machina</title>
 </head>
 
@@ -22,7 +28,7 @@
   </header>
   <div class="navbar">
     <a href="assortiment.html">Assortiment pizza</a>
-        <a href="login.html">Login</a>
+        <a href="login.php">Login</a>
         <a href="bestellingoverzicht.html">Bestelling overzicht</a>
         <a href="detailoverzicht.html">Detailoverzicht </a>
       </div>

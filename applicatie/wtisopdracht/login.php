@@ -78,7 +78,7 @@ if (isset($_SESSION['username'])) {
                         <label for="password">Wachtwoord</label>
                         <input type="password" id="password" placeholder="Voer je wachtwoord in" required>
                     </div>
-                    <a href="registratie.html">Registreer je hier</a>
+                    <a href="registratie.php">Registreer je hier</a>
                     <button type="submit" class="form-button">Inloggen</button>
                 </form>
             </div>

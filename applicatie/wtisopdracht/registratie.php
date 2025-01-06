@@ -1,117 +1,89 @@
-
-
 <?php
+require_once '../wtisopdracht/library/db_connectie.php';
 
-function sanitize($string){
-    return htmlspecialchars(strip_tags($string));
-}
+$melding = '';  // Initialisatie melding
 
-require_once 'db_connectie.php';
-$fouten = array();
-
-// 4 kolommen, dus ook 4 variabelen
-if(isset($_POST['opslaan'])) {
-$componistId    =  sanitize($_POST['componistId']) ;
-$naam           =  sanitize($_POST['naam']);
-$geboortedatum  = sanitize($_POST['geboortedatum']) ;
-$schoolId       = sanitize($_POST['schoolId']) ;
-
-$hash = password_hash($password, PASSWORD_DEFAULT);
-
-$melding = "insert into login('username,password') values (':username,:password')";
-
-
-}
-function getSchoolIdSelectBox()
-{
- 
-    $db = maakVerbinding();
-    $sql = 'select * from User where username = :username';
-    $data = $db->query($sql);
-
-    $selectbox = '<select id="schoolID" name="schoolID">';
-    foreach($data as $rij)
-    {
-        $schoolID = $rij['schoolID'];
-        $selectbox .= "<option value=\"$schoolID\">$schoolID</option>";
- 
-    }
-    $selectbox .= '</select>';
-
-    return $selectbox;
-}
-
-if (empty($componistId)) {
-    $fouten[] = 'componistId is verplicht om in te vullen.';
-}
-
-if (!is_numeric($componistId)) {
-    $fouten[] = 'componistId moet een numerieke waarde zijn.';
-}
-
-// Naam (not null, text)
-if (empty($naam)) {
-    $fouten[] = 'naam is verplicht om in te vullen.';
-}
-
-// Controleer niet verplichte velden
-if (empty($geboortedatum)) {
-    $geboortedatum = null;
-}
-// Controleer niet verplichte velden
-if (empty($schoolId)) {
-    $schoolId = null;
-}
-
-if (count($fouten) > 0) {
-    // Fouten: maak een melding
-    $melding = '<ul class="error">';
-
-    foreach($fouten as $fout)
-    {
-        $melding .= '<li>'.$fout.'</li>';
-
-    }
-    $melding .= '</ul>';
-} else
-{
-    $db = maakVerbinding();
-    $sql = "INSERT INTO componist (componistId, naam, geboortedatum, schoolId) 
-    VALUES (:componistId, :naam, :geboortedatum, :schoolId)";
+// Check of het formulier is ingediend
+if (isset($_POST['registeren'])) {
+    $fouten = [];
     
-    $query = $db->prepare($sql);
-    $data_array = [
-        'componistId' => $componistId,
-        'naam' => $naam,
-        'geboortedatum' => $geboortedatum,
-        'schoolId' => $schoolId,
-    ];
+    // 1. Inlezen gegevens uit het formulier
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+    $first_name = trim($_POST['first_name'] ?? '');
+    $last_name = trim($_POST['last_name'] ?? '');
+    $adress = trim($_POST['adress'] ?? '');
     
-    $succes = $query->execute($data_array);
-
-    if ($succes) {
-        $melding = 'Gegevens zijn opgeslagen';
-    }else{
-        $melding = 'Niet opgeslagen';
+    // 2. Controleer of de gegevens geldig zijn
+    if (empty($username) || strlen($username) < 4) {
+        $fouten[] = 'Gebruikersnaam moet minstens 4 karakters bevatten.';
+    }
+    
+    if (empty($password) || strlen($password) < 8) {
+        $fouten[] = 'Wachtwoord moet minstens 8 karakters bevatten.';
+    }
+    
+    if (empty($first_name)) {
+        $fouten[] = 'Voornaam is verplicht.';
+    }
+    
+    if (empty($last_name)) {
+        $fouten[] = 'Achternaam is verplicht.';
+    }
+    
+    if (empty($adress)) {
+        $fouten[] = 'Adres is verplicht.';
+    }
+    
+    // Controleer of er fouten zijn
+    if (count($fouten) > 0) {
+        $melding = "Er waren fouten in de invoer:<ul>";
+        foreach ($fouten as $fout) {
+            $melding .= "<li>$fout</li>";
+        }
+        $melding .= "</ul>";
+    } else {
+        // 3. Gegevens opslaan
+        $passwordhash = password_hash($password, PASSWORD_DEFAULT);
+        
+        // Databaseverbinding maken
+        $db = maakVerbinding();
+        
+        // Insert-query voorbereiden
+        $sql = 'INSERT INTO User(username, password, first_name, last_name, adress, role)
+                VALUES (:username, :password, :first_name, :last_name, :adress, :role)';
+        $query = $db->prepare($sql);
+        
+        // Data array voorbereiden
+        $data_array = [
+            'username' => $username,
+            'password' => $passwordhash,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'adress' => $adress,
+            'role' => 'Client'
+        ];
+        
+        // Gegevens invoegen
+        $succes = $query->execute($data_array);
+        
+        if ($succes) {
+            $melding = 'Gebruiker is succesvol geregistreerd.';
+        } else {
+            $melding = 'Registratie is mislukt. Probeer het opnieuw.';
+        }
     }
 }
-
-
-
-echo $melding
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/normalize.css">
-    <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/style.css">
+    <link rel="stylesheet" href="../wtisopdracht/CSS/normalize.css">
+    <link rel="stylesheet" href="../wtisopdracht/CSS/style.css">
     <title>Registratie</title>
   </head>
   
@@ -136,34 +108,35 @@ echo $melding
             <h2>Registreren</h2>
             <form>
                 <div class="form-group">
-                    <label for="register-name">Naam</label>
-                    <input type="text" id="register-name" placeholder="Voer je naam in" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-email">E-mailadres</label>
-                    <input type="email" id="register-email" placeholder="Voer je e-mailadres in" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Wachtwoord</label>
-                    <input type="password" id="register-password" placeholder="Kies een wachtwoord" required>
+                    <label for="username">Naam</label>
+                    <input type="text" id="username" placeholder="Voer je naam in" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="register-postcode">Postcode</label>
-                    <input type="text" id="register-postcode" placeholder="Voer je Postcode" required>
+                    <label for="password">Wachtwoord</label>
+                    <input type="password" id="password" placeholder="Kies een wachtwoord" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">Voornaam</label>
+                    <input type="text" id="first_name" placeholder="Voer je Voornaam in" required>
                 </div>
 
 
                 <div class="form-group">
-                    <label for="register-straatnaam">Straatnaam en huisnummer</label>
-                    <input type="text" id="register-straatnaam" placeholder="Voer je Straatnaam en huisnummer" required>
+                    <label for="last_name">Achternaam</label>
+                    <input type="text" id="last_name" placeholder="Voer je Achternaam" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="register-woonplaats">Woonplaats</label>
-                    <input type="text" id="register-woonplaats" placeholder="Voer je Woonplaats in " required>
+                    <label for="adress">Adres</label>
+                    <input type="text" id="adress" placeholder="Voer je Adres in " required>
                 </div>
-                <button type="submit" class="form-button">Registreren</button>
+                <div class="form-group">
+                    <label for="role">Rol</label>
+                    <input type="hidden" id="role" required>
+                </div>
+                <button type="submit" name="registeren class="form-button">Registreren</button>
             </form>
         </div>
     </main>
