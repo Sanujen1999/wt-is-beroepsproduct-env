@@ -14,6 +14,11 @@ $naam           =  sanitize($_POST['naam']);
 $geboortedatum  = sanitize($_POST['geboortedatum']) ;
 $schoolId       = sanitize($_POST['schoolId']) ;
 
+$hash = password_hash($password, PASSWORD_DEFAULT);
+
+$melding = "insert into login('username,password') values (':username,:password')";
+
+
 }
 function getSchoolIdSelectBox()
 {
