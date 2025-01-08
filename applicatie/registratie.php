@@ -1,6 +1,5 @@
 <?php
-require_once '../wtisopdracht/library/db_connectie.php';
-
+require_once '../library/db_connectie.php';
 $melding = '';  // Initialisatie melding
 
 // Check of het formulier is ingediend
