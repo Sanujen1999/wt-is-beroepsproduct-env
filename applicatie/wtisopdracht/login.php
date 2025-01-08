@@ -40,15 +40,14 @@ if (isset($_SESSION['username'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/normalize.css">
-  <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/style.css">
-  <title>Login</title>
-</head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../wtisopdracht/CSS/normalize.css">
+    <link rel="stylesheet" href="../wtisopdracht/CSS/style.css">
+    <title>Registratie</title>
+  </head>
 
 <body>
     <header>
@@ -62,7 +61,7 @@ if (isset($_SESSION['username'])) {
       </header>
       <div class="navbar">
         <a href="assortiment.html">Assortiment pizza</a>
-            <a href="login.html">Login</a>
+            <a href="login.php">Login</a>
           </div>
     <main>
         <div class="form-container">
@@ -79,7 +78,7 @@ if (isset($_SESSION['username'])) {
                         <input type="password" id="password" placeholder="Voer je wachtwoord in" required>
                     </div>
                     <a href="registratie.php">Registreer je hier</a>
-                    <button type="submit" class="form-button">Inloggen</button>
+                    <button type="submit" class="form-button" name="login">Inloggen</button>
                 </form>
             </div>
           </div>
