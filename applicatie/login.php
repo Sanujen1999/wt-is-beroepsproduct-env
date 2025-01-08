@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
 
-    echo "Gebruikersnaam: " . $username . "<br>"; 
-    echo "Wachtwoord: " . $password . "<br>";
+    // echo "Gebruikersnaam: " . $username . "<br>"; 
+    // echo "Wachtwoord: " . $password . "<br>";
 
     // Voor nu simuleren we gebruikerscontrole (gebruik een echte database in productie)
     $sql = "SELECT password FROM [User] WHERE username = :username";
@@ -64,15 +64,15 @@ if (isset($_SESSION['username'])) {
 <body>
   <header>
     <div>
-      <a href="index.html"> <img src="Images/Logopizza.jpg" alt="logo" class="logo"></a>
+      <a href="index.php"> <img src="Images/Logopizza.jpg" alt="logo" class="logo"></a>
     </div>
     <div>
-      <a href="profiel.html"> <img src="Images/profiel.jpg" alt="logo" class="icon"></a>
-      <a href="winkelmand.html"> <img src="Images/winkelmandje.jpg" alt="logo" class="icon"></a>
+      <a href="profiel.php"> <img src="Images/profiel.jpg" alt="logo" class="icon"></a>
+      <a href="winkelmand.php"> <img src="Images/winkelmandje.jpg" alt="logo" class="icon"></a>
     </div>
   </header>
   <div class="navbar">
-    <a href="assortiment.html">Assortiment pizza</a>
+    <a href="assortiment.php">Assortiment pizza</a>
     <a href="login.php">Login</a>
     <a href="logout.php">Logout</a>
   </div>
@@ -108,8 +108,8 @@ if (isset($_SESSION['username'])) {
       <div class="footer-item">
         <h3>Overig</h3>
         <ul>
-          <li><a href="overons.html">Over ons</a></li>
-          <li><a href="privacy.html">Juridische verklaring</a></li>
+          <li><a href="overons.php">Over ons</a></li>
+          <li><a href="privacy.php">Juridische verklaring</a></li>
         </ul>
       </div>
       <div class="footer-item">
