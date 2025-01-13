@@ -1,5 +1,7 @@
 <?php
+require_once '../applicatie/library/db_connectie.php';
 session_start();
+$db = maakVerbinding();
 
 // Controleer of de winkelmand bestaat en haal de inhoud op
 $winkelmand = isset($_SESSION['winkelmand']) ? $_SESSION['winkelmand'] : [];
@@ -11,6 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
   $_SESSION['winkelmand'] = array_values($winkelmand); // Herindexeer array
   header('Location: winkelmand.php'); // Vernieuw de pagina
   exit;
+}
+
+// Haal alle bestellingen op uit de database
+$sql = "SELECT order_id, product_name, quantity FROM Product";
+$stmt = $db->prepare($sql);
+
+try {
+    $stmt->execute();
+    $bestellingen = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo 'Fout bij het ophalen van bestellingen: ' . $e->getMessage();
+    $bestellingen = [];
 }
 ?>
 
@@ -48,13 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
       <?php else: ?>
         <?php foreach ($winkelmand as $index => $item): ?>
           <div class="cart-item">
-            <img src="<?= htmlspecialchars($item['image'] ?? '../applicatie/Images') ?>" alt="<?= htmlspecialchars($item['name'] ?? 'Onbekende pizza') ?>">
+            <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
             <div class="item-details">
-              <h3><?= htmlspecialchars($item['name'] ?? 'Onbekende pizza') ?></h3>
-              <p class="price">€<?= number_format($item['price'] ?? 0, 2) ?></p>
-              <p>Aantal: <span class="quantity">
-                  <?= htmlspecialchars($item['quantity'] ?? 1) ?>
-                </span></p>
+              <h3><?= htmlspecialchars($item['name']) ?></h3>
+              <p class="price">€<?= number_format($item['price'], 2) ?></p>
+              <p>Aantal: <span class="quantity"><?= htmlspecialchars($item['quantity']) ?></span></p>
             </div>
           </div>
           <form method="POST">
@@ -73,6 +85,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
           </form>
     </div>
 
+  <div class="bestellingen-container">
+    <h2>Eerdere bestellingen</h2>
+    <?php if (empty($bestellingen)): ?>
+      <p>Geen eerdere bestellingen gevonden.</p>
+    <?php else: ?>
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Productnaam</th>
+            <th>Hoeveelheid</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($bestellingen as $bestelling): ?>
+            <tr>
+              <td><?= htmlspecialchars($bestelling['order_id']) ?></td>
+              <td><?= htmlspecialchars($bestelling['product_name']) ?></td>
+              <td><?= htmlspecialchars($bestelling['quantity']) ?></td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    <?php endif; ?>
+  </div>
 </div>
   </main>
   <footer class="footer">
