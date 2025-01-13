@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/normalize.css">
-    <link rel="stylesheet" href="../beroepsproduct-wtux-Sanujen1999/CSS/style.css">
+    <link rel="stylesheet" href="../CSS/normalize.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <title>Over on</title>
 </head>
 <body>
     <header>
         <div>
-          <a href="index.html"><img src="Images/Logopizza.jpg" alt="logo" class="logo"></a>
+          <a href="index.php"><img src="Images/Logopizza.jpg" alt="logo" class="logo"></a>
         </div>
     <div>
-      <a href="profiel.html"> <img src="Images/profiel.jpg" alt="logo" class="icon"></a>
-      <a href="winkelmand.html"> <img src="Images/winkelmandje.jpg" alt="logo" class="icon" ></a>
+      <a href="profiel.php"> <img src="Images/profiel.jpg" alt="logo" class="icon"></a>
+      <a href="winkelmand.php"> <img src="Images/winkelmandje.jpg" alt="logo" class="icon" ></a>
     </div>
       </header>
       <div class="navbar">
-        <a href="assortiment.html">Assortiment pizza</a>
-            <a href="login.html">Login</a>
+        <a href="assortiment.php">Assortiment pizza</a>
+            <a href="login.php">Login</a>
           </div>
           <main class="about-container">
             <!-- Bedrijfsinformatie -->
@@ -59,8 +59,8 @@
               <div class="footer-item">
                 <h3>Overig</h3>
                 <ul>
-                    <li><a href="overons.html">Over ons</a></li>
-                    <li><a href="privacy.html">Juridische verklaring</a></li>
+                    <li><a href="overons.php">Over ons</a></li>
+                    <li><a href="privacy.php">Juridische verklaring</a></li>
                   </ul>
               </div>
               <div class="footer-item">
