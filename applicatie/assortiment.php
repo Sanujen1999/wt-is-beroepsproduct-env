@@ -4,39 +4,39 @@ require_once '../applicatie/library/db_connectie.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pizza = $_POST['pizza'];
-    $price = $_POST['price'];
-    $image = $_POST['image'];
+  $pizza = $_POST['pizza'];
+  $price = $_POST['price'];
+  $image = $_POST['type_id']; // Dit was 'image' in $_SESSION, maar in formulier is het 'type_id'
 
-    // Controleer of winkelmand al bestaat
-    if (!isset($_SESSION['winkelmand'])) {
-        $_SESSION['winkelmand'] = [];
+  // Controleer of winkelmand al bestaat
+  if (!isset($_SESSION['winkelmand'])) {
+    $_SESSION['winkelmand'] = [];
+  }
+
+  // Controleer of de pizza al in de winkelmand zit
+  $found = false;
+  foreach ($_SESSION['winkelmand'] as &$item) {
+    if ($item['name'] === $pizza) {
+      // Verhoog de hoeveelheid als het item al bestaat
+      $item['quantity'] += 1;
+      $found = true;
+      break;
     }
+  }
 
-    // Controleer of de pizza al in de winkelmand zit
-    $found = false;
-    foreach ($_SESSION['winkelmand'] as &$item) {
-        if ($item['name'] === $pizza) {
-            // Verhoog de hoeveelheid als het item al bestaat
-            $item['quantity'] += 1;
-            $found = true;
-            break;
-        }
-    }
+  // Voeg het item toe als het niet bestaat
+  if (!$found) {
+    $_SESSION['winkelmand'][] = [
+      'name' => $pizza,
+      'price' => $price,
+      'image' => $image,
+      'quantity' => 1, // Standaard aantal
+    ];
+  }
 
-    // Voeg het item toe als het niet bestaat
-    if (!$found) {
-        $_SESSION['winkelmand'][] = [
-            'name' => $pizza,
-            'price' => $price,
-            'image' => $image,
-            'quantity' => 1, // Standaard aantal
-        ];
-    }
-
-    // Doorsturen naar winkelmand
-    header('Location: winkelmand.php');
-    exit;
+  // Doorsturen naar winkelmand
+  header('Location: winkelmand.php');
+  exit;
 }
 ?>
 
@@ -82,12 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <li>Olijfolie</li>
         </ul>
         <form method="POST">
-    <input type="hidden" name="pizza" value="Pizza Margherita">
-    <input type="hidden" name="price" value="9.99">
-    <input type="hidden" name="type_id" value="Images/pizzamagaritha.jpg">
-    <button type="submit" class="order-button">Bestellen</button>
-</form>
-
+          <input type="hidden" name="pizza" value="Pizza Margherita">
+          <input type="hidden" name="price" value="9.99">
+          <input type="hidden" name="type_id" value="Images/pizzamagaritha.jpg">
+          <button type="submit" class="order-button">Bestellen</button>
+        </form>
       </div>
       <!-- Pizza Pepperoni -->
       <div class="pizza-card">
@@ -101,7 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <li>Oregano</li>
         </ul>
         <form method="POST">
-          <input type="hidden" name="pizza" value="Pepperoni Pizza">
+          <input type="hidden" name="pizza" value="Pizza Pepperoni">
+          <input type="hidden" name="price" value="12.99">
+          <input type="hidden" name="type_id" value="Images/peperonipizza.jpg">
           <button type="submit" class="order-button">Bestellen</button>
         </form>
       </div>
@@ -117,7 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <li>Uien</li>
         </ul>
         <form method="POST">
-          <input type="hidden" name="pizza" value="Shoarma Pizza">
+          <input type="hidden" name="pizza" value="Pizza Shoarma">
+          <input type="hidden" name="price" value="14.99">
+          <input type="hidden" name="type_id" value="Images/pizzashoarma.jpg">
           <button type="submit" class="order-button">Bestellen</button>
         </form>
       </div>

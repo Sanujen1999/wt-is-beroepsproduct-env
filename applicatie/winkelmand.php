@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
       <?php else: ?>
         <?php foreach ($winkelmand as $index => $item): ?>
           <div class="cart-item">
-            <img src="<?= htmlspecialchars($item['image'] ?? 'default-image.jpg') ?>" alt="<?= htmlspecialchars($item['name'] ?? 'Onbekende pizza') ?>">
+            <img src="<?= htmlspecialchars($item['image'] ?? '../applicatie/Images') ?>" alt="<?= htmlspecialchars($item['name'] ?? 'Onbekende pizza') ?>">
             <div class="item-details">
               <h3><?= htmlspecialchars($item['name'] ?? 'Onbekende pizza') ?></h3>
               <p class="price">€<?= number_format($item['price'] ?? 0, 2) ?></p>
