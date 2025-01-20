@@ -3,10 +3,20 @@ require_once '../applicatie/library/db_connectie.php';
 
 session_start();
 
+$db = maakVerbinding();
+$query = "SELECT name, price, type_id FROM Product";
+$stmt = $db->query($query);
+$producten = $stmt->fetchAll();
+
+function generateOrderId() {
+  return uniqid('order_', true);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $pizza = $_POST['pizza'];
+  $pizza = $_POST['name'];
   $price = $_POST['price'];
-  $image = $_POST['type_id']; // Dit was 'image' in $_SESSION, maar in formulier is het 'type_id'
+  $image = $_POST['type_id'];
+  $order_id = generateOrderId();
 
   // Controleer of winkelmand al bestaat
   if (!isset($_SESSION['winkelmand'])) {
@@ -30,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       'name' => $pizza,
       'price' => $price,
       'image' => $image,
-      'quantity' => 1, // Standaard aantal
+      'quantity' => 1,
     ];
   }
 
@@ -41,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
   <meta charset="UTF-8">
@@ -58,74 +68,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <a href="index.php"> <img src="Images/Logopizza.jpg" alt="logo" class="logo"></a>
     </div>
     <div>
-      <a href="profiel.php"> <img src="Images/profiel.jpg" alt="logo" class="icon"></a>
-      <a href="winkelmand.php"> <img src="Images/winkelmandje.jpg" alt="logo" class="icon"></a>
+      <a href="profiel.php"> <img src="Images/profiel.jpg" alt="profiel" class="icon"></a>
+      <a href="winkelmand.php"> <img src="Images/winkelmandje.jpg" alt="winkelmand" class="icon"></a>
     </div>
   </header>
   <div class="navbar">
     <a href="assortiment.php">Assortiment pizza</a>
     <a href="login.php">Login</a>
   </div>
+
   <main>
     <h1>Pizza Keuze</h1>
     <p class="openingzin">De keuzemenu</p>
     <div class="pizza-container">
-      <!-- Pizza Margherita -->
-      <div class="pizza-card">
-        <img src="Images/pizzamagaritha.jpg" alt="Pizza Margherita">
-        <h3>Margherita pizza</h3>
-        <p>Klassieke pizza met tomatensaus, mozzarella, basilicum en olijfolie.</p>
-        <ul class="recipe-list">
-          <li>Tomatensaus</li>
-          <li>Mozzarella</li>
-          <li>Basilicum</li>
-          <li>Olijfolie</li>
-        </ul>
-        <form method="POST">
-          <input type="hidden" name="pizza" value="Pizza Margherita">
-          <input type="hidden" name="price" value="9.99">
-          <input type="hidden" name="type_id" value="Images/pizzamagaritha.jpg">
-          <button type="submit" class="order-button">Bestellen</button>
-        </form>
-      </div>
-      <!-- Pizza Pepperoni -->
-      <div class="pizza-card">
-        <img src="Images/peperonipizza.jpg" alt="Pepperoni Pizza">
-        <h3>Pepperoni pizza</h3>
-        <p>Geladen met pepperoni en kaas.</p>
-        <ul class="recipe-list">
-          <li>Tomatensaus</li>
-          <li>Mozzarella</li>
-          <li>Pepperoni</li>
-          <li>Oregano</li>
-        </ul>
-        <form method="POST">
-          <input type="hidden" name="pizza" value="Pizza Pepperoni">
-          <input type="hidden" name="price" value="12.99">
-          <input type="hidden" name="type_id" value="Images/peperonipizza.jpg">
-          <button type="submit" class="order-button">Bestellen</button>
-        </form>
-      </div>
-      <!-- Pizza Shoarma -->
-      <div class="pizza-card">
-        <img src="Images/pizzashoarma.jpg" alt="Shoarma Pizza">
-        <h3>Shoarma pizza</h3>
-        <p>Een mix van verse kip en knoflooksaus.</p>
-        <ul class="recipe-list">
-          <li>Kip</li>
-          <li>Knoflook</li>
-          <li>Kaas</li>
-          <li>Uien</li>
-        </ul>
-        <form method="POST">
-          <input type="hidden" name="pizza" value="Pizza Shoarma">
-          <input type="hidden" name="price" value="14.99">
-          <input type="hidden" name="type_id" value="Images/pizzashoarma.jpg">
-          <button type="submit" class="order-button">Bestellen</button>
-        </form>
-      </div>
+      <?php if ($producten): ?>
+        <?php foreach ($producten as $product): ?>
+          <div class="pizza-card">
+            <img src="<?= htmlspecialchars($product['type_id']); ?>" alt="<?= htmlspecialchars($product['name']); ?>">
+            <h3><?= htmlspecialchars($product['name']); ?></h3>
+            <p>Prijs: €<?= htmlspecialchars($product['price']); ?></p>
+            <form method="POST">
+              <input type="hidden" name="name" value="<?= htmlspecialchars($product['name']); ?>">
+              <input type="hidden" name="price" value="<?= htmlspecialchars($product['price']); ?>">
+              <input type="hidden" name="type_id" value="<?= htmlspecialchars($product['type_id']); ?>">
+              <button type="submit" class="order-button">Bestellen</button>
+            </form>
+          </div>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>Geen producten gevonden.</p>
+      <?php endif; ?>
     </div>
   </main>
+
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-item">
@@ -142,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="footer-item">
         <h3>Contact</h3>
         <p>Email: support@pizza.com</p>
-        <p>Phone: (123) 456-7890</p>
+        <p>Telefoon: (123) 456-7890</p>
       </div>
     </div>
   </footer>
