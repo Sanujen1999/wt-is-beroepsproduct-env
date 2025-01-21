@@ -44,7 +44,6 @@
               <li>Olijf olie</li>
           </ul>
           <p class="price">€15.00</p>
-          <button class="order-button">Bestellen</button>
       </div>
       <div class="pizza-card">
           <img src="Images/peperonipizza.jpg" alt="Pepperoni Pizza">
@@ -57,7 +56,6 @@
               <li>Oregano</li>
           </ul>
           <p class="price">€20.00</p>
-          <button class="order-button">Bestellen</button>
       </div>
       <div class="pizza-card">
           <img src="Images/pizzashoarma.jpg" alt="Shoarma Pizza">
@@ -70,7 +68,6 @@
               <li>Uien</li>
           </ul>
           <p class="price">€18.00</p>
-          <button class="order-button">Bestellen</button>
       </div>
   </div>
   </main>

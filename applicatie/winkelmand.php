@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
   try {
     $db->beginTransaction();
 
-    $client_username = $_SESSION['username'];
-    $client_name = $_SESSION['username'];
-    $personnel_username =  $_SESSION['username'];
+    $client_username = $_SESSION['username'] ?? 'Null';
+    $client_name = $_SESSION['username'] ?? 'Null';
+    $personnel_username =  $_SESSION['username'] ?? 'Null';
     $datetime = date('Y-m-d H:i:s');
     $status = 1;
     $address = $_SESSION['address'];
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
 
     $db->commit();
     $_SESSION['winkelmand'] = []; // Leeg de winkelmand
-     header('Location: index.php'); // Redirect naar de index-pagina
+     header('Location: winkelmand.php'); // Redirect naar de index-pagina
     exit;
   } catch (PDOException $e) {
     $db->rollBack();

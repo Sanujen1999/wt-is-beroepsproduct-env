@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if ($hashed_password && password_verify($password, $hashed_password)) {
         // Sla gebruikersinformatie op in de sessie
         $_SESSION['username'] = $username;
-        $logged_in = true;
+         $logged_in = true;
         $html = "<h1>Welcome {$username}</h1>";
       } else {
         echo "<p>Invalid username or password. Please try again.</p>";
@@ -39,16 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
       echo "<p>Please fill in both username and password.</p>";
     }
-  
 }
 
 // Controleer of er al een sessie actief is
 if (isset($_SESSION['username'])) {
   $logged_in = true;
+  $username = $_SESSION['username']; 
   $html = "<h1>Welcome {$_SESSION['username']}</h1>";
   $html .= '<a href="logout.php">Logout</a>';
 } 
  
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -75,8 +78,9 @@ if (isset($_SESSION['username'])) {
   </header>
   <div class="navbar">
     <a href="assortiment.php">Assortiment pizza</a>
+    <a href="bestellingoverzicht.php">Bestellingoverzicht</a>
+    <a href="detailoverzicht.php">Detail overzicht</a>
     <a href="login.php">Login</a>
-
   </div>
   <main>
     <div class="form-container">
