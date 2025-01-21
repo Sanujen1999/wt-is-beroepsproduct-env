@@ -12,7 +12,7 @@ if (isset($_POST['registeren'])) {
     $password = trim($_POST['password'] ?? '');
     $first_name = trim($_POST['first_name'] ?? '');
     $last_name = trim($_POST['last_name'] ?? '');
-    $adress = trim($_POST['adress'] ?? '');
+    $adress = trim($_POST['address'] ?? '');
     $role = trim($_POST['role'] ?? '');
 
     // 2. Controleer of de gegevens geldig zijn
@@ -48,8 +48,8 @@ if (isset($_POST['registeren'])) {
         $db = maakVerbinding();
 
         // Insert-query voorbereiden
-        $sql = 'INSERT INTO [User](username, password, first_name, last_name,role)
-        VALUES (:username, :password, :first_name, :last_name,  :role)';
+        $sql = 'INSERT INTO [User](username, password, first_name, last_name,role,address)
+        VALUES (:username, :password, :first_name, :last_name,:role, :address)';
         
         $query = $db->prepare($sql);
 
@@ -59,6 +59,7 @@ if (isset($_POST['registeren'])) {
             'password' => $passwordhash,
             'first_name' => $first_name,
             'last_name' => $last_name,
+            'address' => $adress,
             'role' => 'Client'
         ];
 
@@ -110,7 +111,7 @@ if (isset($_POST['registeren'])) {
             <?php endif; ?>
             <form method="POST" action="">
                 <div class="form-group">
-                    <label for="username">Naam</label>
+                    <label for="username">Gebruikersnaam</label>
                     <input type="text" id="username" name="username" placeholder="Voer je naam in" required>
                 </div>
 
@@ -128,6 +129,11 @@ if (isset($_POST['registeren'])) {
                 <div class="form-group">
                     <label for="last_name">Achternaam</label>
                     <input type="text" id="last_name" name="last_name" placeholder="Voer je Achternaam" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Adres</label>
+                    <input type="text" id="address" name="address" placeholder="Voer je Adres">
                 </div>
 
                 <button type="submit" class="form-button" name="registeren">Registreren</button>

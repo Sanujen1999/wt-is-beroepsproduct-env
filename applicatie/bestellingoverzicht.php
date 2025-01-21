@@ -19,18 +19,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id']) && isset(
     $status = $_POST['status'];
     $personnel_username = $_SESSION['username'];
 
-    // Update de status en personnel_username in de database
-    $sql = "UPDATE Pizza_Order SET status = :status, personnel_username = :personnel_username WHERE order_id = :order_id";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':status', $status, PDO::PARAM_INT);
-    $stmt->bindValue(':personnel_username', $personnel_username, PDO::PARAM_STR);
-    $stmt->bindValue(':order_id', $order_id, PDO::PARAM_INT);
-    $stmt->execute();
+    try {
+        // Begin een transactie
+        $db->beginTransaction();
 
-    if ($stmt->rowCount() > 0) {
+        // Update de status en personnel_username in de database
+        $sql = "UPDATE Pizza_Order SET status = :status, personnel_username = :personnel_username WHERE order_id = :order_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':status', $status, PDO::PARAM_INT);
+        $stmt->bindValue(':personnel_username', $personnel_username, PDO::PARAM_STR);
+        $stmt->bindValue(':order_id', $order_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Verwijder het order_id uit de tabel Pizza_Order_Product als de status 'bezorgd' is
+        if ($status == 4) {
+            $sql = "DELETE FROM Pizza_Order_Product WHERE order_id = :order_id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':order_id', $order_id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        // Commit de transactie
+        $db->commit();
+
         echo "<p>Status bijgewerkt van order $order_id.</p>";
-    } else {
-        echo "<p>Status niet bijgewerkt order $order_id.</p>";
+    } catch (Exception $e) {
+        // Rollback de transactie bij een fout
+        $db->rollBack();
+        echo "<p>Fout bij het bijwerken van de status van order $order_id: " . $e->getMessage() . "</p>";
     }
 }
 
@@ -73,7 +89,6 @@ if ($logged_in) {
         <a href="login.php">Login</a>
         <a href="bestellingoverzicht.php">Bestelling Overzicht</a>
         <a href="detailoverzicht.php">DetailOverzicht</a>
-
     </div>
     <main class="main-container">
         <?php if ($logged_in): ?>
