@@ -4,7 +4,6 @@ session_start();
 $db = maakVerbinding();
 $logged_in = false;
 $html = "";
-
 // Controleer of er een POST-verzoek is om in te loggen
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Controleer of username en pass zijn ingevuld
