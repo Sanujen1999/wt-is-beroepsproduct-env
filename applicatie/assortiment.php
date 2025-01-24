@@ -6,7 +6,7 @@ session_start();
 $db = maakVerbinding();
 $query = "SELECT name, price, type_id FROM Product";
 $stmt = $db->query($query);
-$producten = $stmt->fetchAll();
+ $producten = $stmt->fetchAll();
 
 function generateOrderId() {
   return uniqid('order_', true);
